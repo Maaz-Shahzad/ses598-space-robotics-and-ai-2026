@@ -86,25 +86,66 @@ Plots generated for each gain set:
 - Adding `Kd` improves damping and turn behavior
 - Excessively high `Kp` leads to sharp, non-smooth motion unsuitable for coverage tasks
 
+### Figures
+
+#### Gain set A
+
+<img width="640" height="480" alt="Example terminal debug outputs for controller" src="https://raw.githubusercontent.com/Maaz-Shahzad/ses598-space-robotics-and-ai-2026/refs/heads/main/assignments/first_order_boustrophedon_navigator/Figures/setA/cross_track_error.png" />
+
+<img width="640" height="480" alt="Example terminal debug outputs for controller" src="https://raw.githubusercontent.com/Maaz-Shahzad/ses598-space-robotics-and-ai-2026/refs/heads/main/assignments/first_order_boustrophedon_navigator/Figures/setA/trajectory.png" />
+
+<img width="640" height="480" alt="Example terminal debug outputs for controller" src="https://raw.githubusercontent.com/Maaz-Shahzad/ses598-space-robotics-and-ai-2026/refs/heads/main/assignments/first_order_boustrophedon_navigator/Figures/setA/velocity_profiles.png" />
+
+#### Gain set B
+
+<img width="640" height="480" alt="Example terminal debug outputs for controller" src="https://raw.githubusercontent.com/Maaz-Shahzad/ses598-space-robotics-and-ai-2026/refs/heads/main/assignments/first_order_boustrophedon_navigator/Figures/setB/cross_track_error.png" />
+
+<img width="640" height="480" alt="Example terminal debug outputs for controller" src="https://raw.githubusercontent.com/Maaz-Shahzad/ses598-space-robotics-and-ai-2026/refs/heads/main/assignments/first_order_boustrophedon_navigator/Figures/setB/trajectory.png" />
+
+<img width="640" height="480" alt="Example terminal debug outputs for controller" src="https://raw.githubusercontent.com/Maaz-Shahzad/ses598-space-robotics-and-ai-2026/refs/heads/main/assignments/first_order_boustrophedon_navigator/Figures/setB/velocity_profiles.png" />
+
+#### Gain set C
+
+<img width="640" height="480" alt="Example terminal debug outputs for controller" src="https://raw.githubusercontent.com/Maaz-Shahzad/ses598-space-robotics-and-ai-2026/refs/heads/main/assignments/first_order_boustrophedon_navigator/Figures/setC/cross_track_error.png" />
+
+<img width="640" height="480" alt="Example terminal debug outputs for controller" src="https://raw.githubusercontent.com/Maaz-Shahzad/ses598-space-robotics-and-ai-2026/refs/heads/main/assignments/first_order_boustrophedon_navigator/Figures/setC/trajectory.png" />
+
+<img width="640" height="480" alt="Example terminal debug outputs for controller" src="https://raw.githubusercontent.com/Maaz-Shahzad/ses598-space-robotics-and-ai-2026/refs/heads/main/assignments/first_order_boustrophedon_navigator/Figures/setC/velocity_profiles.png" />
+
 ---
 
-## 7. Challenges Encountered and Solutions
+## 7. Analysis
 
-### 7.1 Oscillations During Straight-Line Tracking
+### 7.1 Gain Set A
+
+Gain set A relies on proportional control only and achieves acceptable tracking on straight segments. However, the lack of derivative damping leads to oscillations, especially during turns and lane transitions. Angular velocity commands are aggressive, resulting in sharp and non-smooth motion. While stable, this behavior is not ideal for coverage tasks.
+
+### 7.2 Gain Set B
+
+Introducing derivative action in the angular channel improves damping and significantly smooths turning behavior. Oscillations in heading and cross-track error are reduced, and trajectory tracking during lane transitions is more consistent. Linear motion remains stable, though small tracking errors persist on straight segments. Overall smoothness is improved compared to gain set A.
+
+### 7.3 Gain Set C
+
+Gain set C adds derivative control to both linear and angular channels, yielding the best overall performance. Cross-track error is reduced and converges faster after disturbances, with minimal oscillations. Velocity profiles are smooth and well-bounded across straight segments and turns. This set provides the best balance between accuracy and smoothness.
+
+---
+## 8. Challenges Encountered and Solutions
+
+### 8.1 Tracking Oscillations
 - **Issue:** Sustained oscillations with P-only control
-- **Solution:** Introduced derivative control to damp oscillations and reduced `Kp_linear`
+- **Solution:** Introduced derivative control to damp oscillations, reduced `Kp_linear` and increased `Kp_angular`. 
 
-### 7.2 Overshoot at Lane Transitions
+### 8.2 Overshoot at Lane Transitions
 - **Issue:** Heading overshoot during 180° turns
 - **Solution:** Increased `Kd_angular` to slow down heading changes and slightly reduced linear velocity during turns
 
-### 7.3 Noise Amplification in Derivative Term
+### 8.3 Noise Amplification in Derivative Term
 - **Issue:** Noisy angular velocity commands when `Kd_angular` was too high
 - **Solution:** Reduced `Kd_angular`
 
 ---
 
-## 8. Final Tuned Parameters
+## 9. Final Tuned Parameters
 
 - Kp_linear = 1.25
 - Kd_linear = 0.4
