@@ -1,0 +1,7 @@
+('Kp_linear', 1.25),
+('Kd_linear', 0.4),
+('Kp_angular', 9.0),
+('Kd_angular', 0.04),
+('spacing', 0.5)
+
+Final average cross-track error: 0.059

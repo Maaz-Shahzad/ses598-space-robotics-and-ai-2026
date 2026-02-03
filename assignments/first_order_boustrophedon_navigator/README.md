@@ -5,7 +5,7 @@
 
 In this assignment, you will understand the provided code in ROS2 with Turtlesim, and refactor and/or tune the navigator to implement a precise lawnmower survey (a boustrophedon pattern). The current code will do the first pattern shown above, which is not a uniform lawnmower survey, shown in the second figure. 
 
-Modify the code to meet the requirements for a uniform survey. 
+Modify the code to meet the requirements for a uniform survey.
 
 ## Background
 Boustrophedon patterns (from Greek: "ox-turning", like an ox drawing a plow) are fundamental coverage survey trajectories useful in space exploration and Earth observation. These patterns are useful for:
