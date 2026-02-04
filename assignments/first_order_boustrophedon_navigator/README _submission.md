@@ -74,11 +74,11 @@ Plots generated for each gain set:
 
 ## 6. Comparison of Different Parameter Sets
 
-| Gain Set | Kp_linear | Kd_linear | Kp_angular | Kd_angular | Comments                          |
-|----------|-----------|-----------|------------|------------|-----------------------------------|
-| A        | 2.0       | 0.0       | 8.5        | 0.0        | Good tracking, inconsistent turns |
-| B        | 1.5       | 0.0       | 9.0        | 0.1        | Smoother turns with good tracking |
-| C        | 1.25      | 0.4       | 9.0        | 0.04       | Improved cross-track error        |
+| Gain Set | Kp_linear | Kd_linear | Kp_angular | Kd_angular | Avg Cross-Track Error | Comments                          |
+|----------|-----------|-----------|------------|------------|-----------------------|-----------------------------------|
+| A        | 2.0       | 0.0       | 8.5        | 0.0        | 0.070                 | Good tracking, inconsistent turns |
+| B        | 1.5       | 0.0       | 9.0        | 0.1        | 0.051                 | Smoother turns with good tracking |
+| C        | 1.25      | 0.4       | 9.0        | 0.04       | 0.059                 | Improved cross-track error        |
 
 ### Observations
 
