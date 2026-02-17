@@ -1,0 +1,23 @@
+        self.Q = np.diag([2.0, 2.0, 8.0, 6.0])  # State cost
+        self.R = np.array([[0.5]])  # Control cost
+
+RUN 1:
+
+[lqr_controller-5] [WARN] [1771290840.530916050] [lqr_controller]: Simulation ended: cart_x=-2.50m, pole_angle=2.24°, duration=33.69s
+[lqr_controller-5] [INFO] [1771290840.538694534] [lqr_controller]: Q values: [2. 2. 8. 6.], R values: [[0.5]]
+[lqr_controller-5] [INFO] [1771290840.541179025] [lqr_controller]: Duration of stable operation: 33.69 s
+[lqr_controller-5] [INFO] [1771290840.543526072] [lqr_controller]: Maximum cart displacement: 2.500 m
+[lqr_controller-5] [INFO] [1771290840.545762562] [lqr_controller]: Maximum pendulum angle deviation: 2.705°
+[lqr_controller-5] [INFO] [1771290840.548121023] [lqr_controller]: Average control effort: 1.108 N
+[lqr_controller-5] [INFO] [1771290840.550462211] [lqr_controller]: Stability score: 4.40/10
+
+RUN 2:
+
+[lqr_controller-5] [WARN] [1771292275.618765189] [lqr_controller]: Simulation ended: cart_x=-2.50m, pole_angle=-1.96°, duration=23.10s
+[lqr_controller-5] [INFO] [1771292275.626193356] [lqr_controller]: Q values: [2. 2. 8. 6.], R values: [[0.5]]
+[lqr_controller-5] [INFO] [1771292275.629619674] [lqr_controller]: Duration of stable operation: 23.10 s
+[lqr_controller-5] [INFO] [1771292275.632353464] [lqr_controller]: Maximum cart displacement: 2.500 m
+[lqr_controller-5] [INFO] [1771292275.635194177] [lqr_controller]: Maximum pendulum angle deviation: 5.172°
+[lqr_controller-5] [INFO] [1771292275.638595980] [lqr_controller]: Average control effort: 2.008 N
+[lqr_controller-5] [INFO] [1771292275.641428418] [lqr_controller]: Stability score: 3.87/10
+
