@@ -21,7 +21,8 @@ def generate_launch_description():
 
         # Gazebo
         ExecuteProcess(
-            cmd=['gz', 'sim', '-r', 'empty.sdf'],
+#            cmd=['gz', 'sim', '-r', 'empty.sdf'],
+            cmd=['gz', 'sim', 'empty.sdf'],  # Removed -r and -s so that simulation can be started manually after controller initializes. In headless mode, it works fine on docker but on my PC the Initial state printed by lqr_controller.py is already around 1.7 rad(approx 96 deg). The simulation time starts after the play button in gazebo is pressed (verified using "ros2 topic echo /clock"). It may be possible to run the sim with '-r' and '-s' options while pausing and unpausing the physics from within the code.
             output='screen'
         ),
 
