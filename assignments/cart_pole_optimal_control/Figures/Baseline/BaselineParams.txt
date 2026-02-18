@@ -4,21 +4,22 @@
 
 RUN 1: 
 
-[lqr_controller-5] [WARN] [1771290132.366817769] [lqr_controller]: Simulation ended: cart_x=-2.50m, pole_angle=-12.23°, duration=23.24s
-[lqr_controller-5] [INFO] [1771290132.375058964] [lqr_controller]: Q values: [1. 1. 1. 1.], R values: [[1.]]
-[lqr_controller-5] [INFO] [1771290132.378025788] [lqr_controller]: Duration of stable operation: 23.24 s
-[lqr_controller-5] [INFO] [1771290132.381317473] [lqr_controller]: Maximum cart displacement: 2.500 m
-[lqr_controller-5] [INFO] [1771290132.384730108] [lqr_controller]: Maximum pendulum angle deviation: 12.233°
-[lqr_controller-5] [INFO] [1771290132.388308637] [lqr_controller]: Average control effort: 1.790 N
-[lqr_controller-5] [INFO] [1771290132.391488217] [lqr_controller]: Stability score: 2.46/10
+[lqr_controller-7] [WARN] [1771451944.637337161] [lqr_controller]: Simulation ended: cart_x=-2.50m, pole_angle=-3.95°, duration=13.55s
+[lqr_controller-7] [INFO] [1771451944.643833228] [lqr_controller]: Q values: [1. 1. 1. 1.], R values: [[1.]]
+[lqr_controller-7] [INFO] [1771451944.647862844] [lqr_controller]: Duration of stable operation: 7.70 s
+[lqr_controller-7] [INFO] [1771451944.651709869] [lqr_controller]: Maximum cart displacement: 2.500 m
+[lqr_controller-7] [INFO] [1771451944.654954005] [lqr_controller]: Maximum pendulum angle deviation: 5.136°
+[lqr_controller-7] [INFO] [1771451944.657945966] [lqr_controller]: Average control effort: 1.615 N
+[lqr_controller-7] [INFO] [1771451944.660886815] [lqr_controller]: Stability score: 3.89/10
 
 RUN 2:
 
-[lqr_controller-5] [WARN] [1771290317.084960879] [lqr_controller]: Simulation ended: cart_x=-2.50m, pole_angle=-5.26°, duration=23.18s
-[lqr_controller-5] [INFO] [1771290317.091311953] [lqr_controller]: Q values: [1. 1. 1. 1.], R values: [[1.]]
-[lqr_controller-5] [INFO] [1771290317.093958934] [lqr_controller]: Duration of stable operation: 23.18 s
-[lqr_controller-5] [INFO] [1771290317.096507165] [lqr_controller]: Maximum cart displacement: 2.500 m
-[lqr_controller-5] [INFO] [1771290317.099095498] [lqr_controller]: Maximum pendulum angle deviation: 5.375°
-[lqr_controller-5] [INFO] [1771290317.101770594] [lqr_controller]: Average control effort: 1.031 N
-[lqr_controller-5] [INFO] [1771290317.104776226] [lqr_controller]: Stability score: 3.87/10
+[lqr_controller-7] [WARN] [1771452022.833946898] [lqr_controller]: Simulation ended: cart_x=2.50m, pole_angle=5.32°, duration=25.82s
+[lqr_controller-7] [INFO] [1771452022.841671139] [lqr_controller]: Q values: [1. 1. 1. 1.], R values: [[1.]]
+[lqr_controller-7] [INFO] [1771452022.844301028] [lqr_controller]: Duration of stable operation: 5.66 s
+[lqr_controller-7] [INFO] [1771452022.846844703] [lqr_controller]: Maximum cart displacement: 2.500 m
+[lqr_controller-7] [INFO] [1771452022.849648963] [lqr_controller]: Maximum pendulum angle deviation: 5.316°
+[lqr_controller-7] [INFO] [1771452022.852010515] [lqr_controller]: Average control effort: 0.955 N
+[lqr_controller-7] [INFO] [1771452022.855086980] [lqr_controller]: Stability score: 3.89/10
+
 

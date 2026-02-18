@@ -83,7 +83,7 @@ class CartPoleLQRController(Node):
         try:
             cart_idx = msg.name.index('cart_to_base')
             pole_idx = msg.name.index('pole_joint')
-            
+            self.current_sim_time = msg.header.stamp.sec + (msg.header.stamp.nanosec / 1e9)
             self.x = np.array([
                 [msg.position[cart_idx]],
                 [msg.velocity[cart_idx]],
@@ -146,7 +146,7 @@ class CartPoleLQRController(Node):
             
             # Ensure time steps are synchronized
             current_time = self.get_clock().now().nanoseconds / 1e9 - self.start_time
-            self.time_steps.append(current_time)
+            self.time_steps.append(self.current_sim_time)
             self.cart_positions.append(self.x[0, 0])
             self.pole_angles.append(np.degrees(self.x[2, 0]))
             self.control_forces.append(force)
