@@ -159,7 +159,7 @@ class CartPoleLQRController(Node):
             if (
                 abs(self.x[0, 0]) > 2.5 or 
                 abs(self.x[2, 0]) > np.radians(45) or 
-                current_time >= self.MAX_SIMULATION_TIME  # Stop after max time
+                self.current_sim_time >= self.MAX_SIMULATION_TIME  # Stop after max time
             ):
                 self.get_logger().warn(f"Simulation ended: cart_x={self.x[0, 0]:.2f}m, pole_angle={np.degrees(self.x[2, 0]):.2f}°, duration={current_time:.2f}s")
                 self.print_metrics()
