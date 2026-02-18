@@ -93,8 +93,13 @@ R = np.array([[1.0]])  # Control effort cost
 | 1 | 23.24 | 2.5 | 12.33 | 1.79 | 2.46 | 
 | 2 | 23.18 | 2.5 | 5.37 | 1.03 | 3.87 | 
 
+**Run 1**:
 
-**ADD FIGURE HERE**
+<img width="640" height="480" alt="Example terminal debug outputs for controller" src="https://raw.githubusercontent.com/Maaz-Shahzad/ses598-space-robotics-and-ai-2026/refs/heads/main/assignments/cart_pole_optimal_control/Figures/Baseline/Figure_1.png" />
+
+**Run 2**:
+
+<img width="640" height="480" alt="Example terminal debug outputs for controller" src="https://raw.githubusercontent.com/Maaz-Shahzad/ses598-space-robotics-and-ai-2026/refs/heads/main/assignments/cart_pole_optimal_control/Figures/Baseline/Figure_2.png" />
 
 ---
 
@@ -126,6 +131,7 @@ After the performance evaluation of baseline controller, an initial controller w
 `R = r`
 
 The initial values were chosen to prioritize pole stabilization while allowing reasonable cart motion.
+
 ---
 
 ### 2. Iterative Parameter Adjustment
@@ -146,41 +152,58 @@ Multiple simulations were performed with three distinct sets of weights in Q and
 
 ### Performance Comparison Table
 
-| Test ID | Q Matrix (diag) | R Value | Max Cart Disp (m) | Max Pole Angle (deg) | Avg Control Effort (N) | Stability Score | Comments |
-|---------|---------------------|---------|-------------------|----------------------|--------------------|---------------------------|-----------------|
-| 1 | [ 2.0,2.0 ,8.0 ,6.0] | 0.5 | 2.5 | 2.705 | 1.108 | 4.40 |  | 
-| 2 | [ 2.0,2.0 ,8.0 ,6.0] | 0.5 | 2.5 | 2.705 | 1.108 | 4.40 |  | 
-| 3 | [ 5.0,5.0 ,10.0 ,8.0] | 0.25 | 2.5 | 7.196 | 3.977 | 3.36 |  | 
-| 4 | [ 5.0,5.0 ,10.0 ,8.0] | 0.25 | 0.091 | 0.997 | 0.744 | 9.58 |  | 
-| 5 | [ 5.0,5.0 ,10.0 ,8.0] | 0.25 | 2.5 | 8.018 | 4.608 | 3.17 |  | 
-| 6 | [ 10.0,10.0 ,20.0 ,15.0] | 0.1 | 0.039 | 1.498 | 1.510 | 9.55 |  | 
-| 7 | [ 10.0,10.0 ,20.0 ,15.0] | 0.1 | 0.092 | 3.072 | 3.436 | 9.03 |  | 
-| 8 | [ 10.0,10.0 ,20.0 ,15.0] | 0.1 | 0.087 | 2.808 | 3.325 | 9.10 |  | 
-
-
+|Parameter Set| Test ID | Q Matrix (diag) | R Value | Max Cart Disp (m) | Max Pole Angle (deg) | Avg Control Effort (N) | Stability Score |Duration of Operation (sec)|
+|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+|A| 1 | [ 2.0,2.0 ,8.0 ,6.0] | 0.5 | 2.5 | 2.705 | 1.108 | 4.40 | 33.69 |
+|A| 2 | [ 2.0,2.0 ,8.0 ,6.0] | 0.5 | 2.5 | 5.172 | 2.008 | 3.87 | 23.10 |  
+|B| 3 | [ 5.0,5.0 ,10.0 ,8.0] | 0.25 | 2.5 | 7.196 | 3.977 | 3.36 | 25.74| 
+|B| 4 | [ 5.0,5.0 ,10.0 ,8.0] | 0.25 | 0.091 | 0.997 | 0.744 | 9.58 | 120.0| 
+|B| 5 | [ 5.0,5.0 ,10.0 ,8.0] | 0.25 | 2.5 | 8.018 | 4.608 | 3.17 | 30.54|  
+|C| 6 | [ 10.0,10.0 ,20.0 ,15.0] | 0.1 | 0.039 | 1.498 | 1.510 | 9.55 | 120.0| 
+|C| 7 | [ 10.0,10.0 ,20.0 ,15.0] | 0.1 | 0.092 | 3.072 | 3.436 | 9.03 | 120.0| 
+|C| 8 | [ 10.0,10.0 ,20.0 ,15.0] | 0.1 | 0.087 | 2.808 | 3.325 | 9.10 | 120.0| 
 
 ---
+
 ### Simulation Time History Plots
 
 #### Parameter Set A
-Test 1:
+
+**Test 1**:
+
 <img width="640" height="480" alt="Example terminal debug outputs for controller" src="https://raw.githubusercontent.com/Maaz-Shahzad/ses598-space-robotics-and-ai-2026/refs/heads/main/assignments/cart_pole_optimal_control/Figures/setA/Figure_1.png" />
-Test 2:
+
+**Test 2**:
+
+<img width="640" height="480" alt="Example terminal debug outputs for controller" src="https://raw.githubusercontent.com/Maaz-Shahzad/ses598-space-robotics-and-ai-2026/refs/heads/main/assignments/cart_pole_optimal_control/Figures/setA/Figure_2.png" />
 
 #### Parameter Set B
-Test 3:
 
-Test 4:
+**Test 3**:
 
-Test 5:
+<img width="640" height="480" alt="Example terminal debug outputs for controller" src="https://raw.githubusercontent.com/Maaz-Shahzad/ses598-space-robotics-and-ai-2026/refs/heads/main/assignments/cart_pole_optimal_control/Figures/setB/Figure_1.png" />
+
+**Test 4**:
+
+<img width="640" height="480" alt="Example terminal debug outputs for controller" src="https://raw.githubusercontent.com/Maaz-Shahzad/ses598-space-robotics-and-ai-2026/refs/heads/main/assignments/cart_pole_optimal_control/Figures/setB/Figure_2.png" />
+
+**Test 5**:
+
+<img width="640" height="480" alt="Example terminal debug outputs for controller" src="https://raw.githubusercontent.com/Maaz-Shahzad/ses598-space-robotics-and-ai-2026/refs/heads/main/assignments/cart_pole_optimal_control/Figures/setB/Figure_3.png" />
 
 #### Parameter Set C
-Test 6:
 
-Test 7:
+**Test 6**:
 
-Test 8:
+<img width="640" height="480" alt="Example terminal debug outputs for controller" src="https://raw.githubusercontent.com/Maaz-Shahzad/ses598-space-robotics-and-ai-2026/refs/heads/main/assignments/cart_pole_optimal_control/Figures/setC/Figure_1.png" />
 
+**Test 7**:
+
+<img width="640" height="480" alt="Example terminal debug outputs for controller" src="https://raw.githubusercontent.com/Maaz-Shahzad/ses598-space-robotics-and-ai-2026/refs/heads/main/assignments/cart_pole_optimal_control/Figures/setC/Figure_2.png" />
+
+**Test 8**:
+
+<img width="640" height="480" alt="Example terminal debug outputs for controller" src="https://raw.githubusercontent.com/Maaz-Shahzad/ses598-space-robotics-and-ai-2026/refs/heads/main/assignments/cart_pole_optimal_control/Figures/setC/Figure_3.png" />
 
 ---
 
