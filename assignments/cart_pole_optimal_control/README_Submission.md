@@ -23,7 +23,7 @@ where:
 
 - x           = cart position (m) 
 - x_dot       = cart velocity (m/s) 
-- theta      = pole angle from upright (rad) 
+- theta      = pole angle from the upright position (rad) 
 - theta_dot   = pole angular velocity (rad/s) 
 
 Note that the **state vector** is represented by **`x`** and the **cart position** is also a scalar represented by `x`.
@@ -53,7 +53,7 @@ where:
             [1/M],
             [0],
             [-1/(M*L)]
-        ])
+        ]
 - **u** = control force applied to the cart 
 
 ---
@@ -70,7 +70,7 @@ where:
 The system includes an earthquake force generator that introduces external disturbances:
 
 - Generates continuous, earthquake-like forces using superposition of sine waves
-- Base amplitude: 15.0N (default setting)
+- Base amplitude: 15.0 N (default setting)
 - Frequency range: 0.5-4.0 Hz (default setting)
 - Random variations in amplitude and phase
 - Additional Gaussian noise
@@ -124,7 +124,7 @@ where:
 
 ### 1. Initial Controller Design
 
-After the performance evaluation of baseline controller, an initial controller was designed with moderate penalties on pole angle and angular velocity:
+After the performance evaluation of the baseline controller, an initial controller was designed with moderate penalties on pole angle and angular velocity:
 
 `Q = diag(qₓ, qdotₓ, q_θ, qdot_θ)`
 
@@ -168,6 +168,7 @@ Multiple simulations were performed with three distinct sets of weights in Q and
 ### Simulation Time History Plots
 
 #### Parameter Set A
+Parameter set A represents the first improvement over the baseline controller, with increased penalties on pole angle and angular velocity while maintaining moderate penalties on cart position and velocity. This configuration resulted in improved pole stabilization compared to the default parameters, with reduced maximum pole angle deviations (2.7°–5.2°). However, the cart still reached its displacement limits (±2.5 m), indicating that cart motion was not sufficiently constrained. The controller applied moderate control effort, resulting in smoother response compared to aggressive configurations. Stability duration improved in one test but remained limited in another, suggesting that while pole stabilization was improved, robustness to disturbances was still inconsistent.
 
 **Test 1**:
 
@@ -178,6 +179,8 @@ Multiple simulations were performed with three distinct sets of weights in Q and
 <img width="640" height="480" alt="Example terminal debug outputs for controller" src="https://raw.githubusercontent.com/Maaz-Shahzad/ses598-space-robotics-and-ai-2026/refs/heads/main/assignments/cart_pole_optimal_control/Figures/setA/Figure_2.png" />
 
 #### Parameter Set B
+
+This set of parameters increased the penalties on all state variables and reduced the control penalty, allowing the controller to respond more aggressively to disturbances. This resulted in further improved stabilization performance under favorable disturbance conditions, as demonstrated in Test 4, where the cart displacement remained extremely small (0.091 m) and the pole angle deviation was limited to less than 1°. This configuration achieved excellent stability, maintaining equilibrium for the full simulation duration (120 s). However, performance varied across runs, with some tests still reaching displacement limits and exhibiting higher control effort. This variability indicates improved responsiveness but reduced consistency under certain disturbance conditions. 
 
 **Test 3**:
 
@@ -192,6 +195,8 @@ Multiple simulations were performed with three distinct sets of weights in Q and
 <img width="640" height="480" alt="Example terminal debug outputs for controller" src="https://raw.githubusercontent.com/Maaz-Shahzad/ses598-space-robotics-and-ai-2026/refs/heads/main/assignments/cart_pole_optimal_control/Figures/setB/Figure_3.png" />
 
 #### Parameter Set C
+
+Parameter Set C applied the highest penalties on all state variables while significantly reducing the control penalty, allowing the controller to prioritize stabilization aggressively. This configuration produced the best overall performance among all tested parameter sets. Cart displacement was minimized to less than 0.1 m in all tests, representing a substantial improvement over previous configurations. Pole angle deviations were also kept low (approximately 1.5°–3°), indicating excellent stabilization performance. Importantly, the controller maintained stability for the entire simulation duration (120 s) in all tests, demonstrating strong robustness to continuous disturbances. Although the control effort increased compared to the baseline and set A configurations, it remained within reasonable limits and contributed to faster stabilization and minimal oscillations. This parameter set achieved the optimal balance between stability, disturbance rejection, and cart motion constraint.
 
 **Test 6**:
 
@@ -209,12 +214,12 @@ Multiple simulations were performed with three distinct sets of weights in Q and
 
 ## Observations
 
+- Increasing cart position and velocity weights significantly reduces cart displacement and improves positional regulation.
 - Increasing pole angle weight significantly improves stabilization. 
+- Increasing angular velocity weight reduces oscillations and improves transient response smoothness.
 - Excessively high cart position weight restricts necessary cart motion. 
-- Very low **R** produces aggressive and oscillatory control. 
+- Lower control penalty (R) improves disturbance rejection by allowing stronger corrective action.
 - Balanced tuning results in fast stabilization with minimal cart displacement. 
-
-**(Add detailed observations here)**
 
 ---
 
