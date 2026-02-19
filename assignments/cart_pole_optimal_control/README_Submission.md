@@ -169,7 +169,8 @@ Multiple simulations were performed with three distinct sets of weights in Q and
 ### Simulation Time History Plots
 
 #### Parameter Set A
-Parameter set A represents the first improvement over the baseline controller, with increased penalties on pole angle and angular velocity while maintaining moderate penalties on cart position and velocity. This configuration resulted in improved pole stabilization compared to the default parameters, with reduced maximum pole angle deviations (2.7°–5.2°). However, the cart still reached its displacement limits (±2.5 m), indicating that cart motion was not sufficiently constrained. The controller applied moderate control effort, resulting in smoother response compared to aggressive configurations. Stability duration improved in one test but remained limited in another, suggesting that while pole stabilization was improved, robustness to disturbances was still inconsistent.
+
+Parameter set A represents the first iterative improvement over the baseline, doubling the state penalties and halving the control cost (R=0.5). While the stability duration doubled compared to the baseline (reaching ~14.8 seconds), the configuration was still unable to prevent the cart from hitting the ±2.5m displacement limit. Furthermore, the pole angle deviations actually increased compared to the baseline, reaching as high as 6.969°, indicating that the modest increase in penalties was insufficient to counter the disturbance forces within the cart's physical constraints.
 
 **Test 1**:
 
@@ -181,7 +182,8 @@ Parameter set A represents the first improvement over the baseline controller, w
 
 #### Parameter Set B
 
-This set of parameters increased the penalties on all state variables and reduced the control penalty, allowing the controller to respond more aggressively to disturbances. This resulted in further improved stabilization performance under favorable disturbance conditions, as demonstrated in Test 4, where the cart displacement remained extremely small (0.091 m) and the pole angle deviation was limited to less than 1°. This configuration achieved excellent stability, maintaining equilibrium for the full simulation duration (120 s). However, performance varied across runs, with some tests still reaching displacement limits and exhibiting higher control effort. This variability indicates improved responsiveness but reduced consistency under certain disturbance conditions. 
+This set further increased state penalties and reduced R to 0.25 to allow for more aggressive control action. This configuration significantly extended the duration of operation, with Test 4 surviving for 72.33 seconds. However, the higher average control effort (~3.1–4.9 N) and continued reliance on the full cart range (2.5m displacement) resulted in even larger pole angle deviations, peaking at 8.24°. While the system stayed upright longer, the "Stability Scores" remained low (~3.10–3.36) due to large maximum cart displacement values.
+
 
 **Test 3**:
 
@@ -197,7 +199,7 @@ This set of parameters increased the penalties on all state variables and reduce
 
 #### Parameter Set C
 
-Parameter Set C applied the highest penalties on all state variables while significantly reducing the control penalty, allowing the controller to prioritize stabilization aggressively. This configuration produced the best overall performance among all tested parameter sets. Cart displacement was minimized to less than 0.1 m in all tests, representing a substantial improvement over previous configurations. Pole angle deviations were also kept low (approximately 1.5°–3°), indicating excellent stabilization performance. Importantly, the controller maintained stability for the entire simulation duration (120 s) in all tests, demonstrating strong robustness to continuous disturbances. Although the control effort increased compared to the baseline and set A configurations, it remained within reasonable limits and contributed to faster stabilization and minimal oscillations. This parameter set achieved the optimal balance between stability, disturbance rejection, and cart motion constraint.
+Parameter Set C provided a definitive solution by applying high penalties to both position and angle while minimizing control cost (R=0.1). This configuration achieved perfect stability, maintaining operation for the full 120-second simulation duration in all tests. Most notably, the cart displacement was virtually eliminated, dropping from 2.5m in previous sets to a maximum of only 0.038m across three simulations. Pole angle deviations were also reduced drastically to nearly 1°, and Stability Scores jumped to an excellent range of 9.54–9.69. This set demonstrates that high-gain state feedback is required to maintain the cart at its home position while successfully rejecting earthquake-like disturbances.
 
 **Test 6**:
 
