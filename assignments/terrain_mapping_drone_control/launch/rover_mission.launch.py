@@ -18,7 +18,7 @@ def generate_launch_description():
 
         # Run auto_detect_land.py with screen output
         ExecuteProcess(
-            cmd=['python3', os.path.join(base_path, 'auto_detect_land.py')],
+            cmd=['python3', os.path.join(base_path, 'rover_detect_land.py')],
             output='screen',
         )
     ])

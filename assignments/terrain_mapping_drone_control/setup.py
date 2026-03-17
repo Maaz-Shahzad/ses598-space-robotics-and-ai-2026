@@ -9,6 +9,7 @@ setup(
     version='0.0.1',
     packages=[package_name],
     data_files=[
+
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
@@ -30,10 +31,17 @@ setup(
             glob('models/cylinder_small/materials/*.*')),
         ('share/' + package_name + '/models/cylinder_small/materials/textures',
             glob('models/cylinder_small/materials/textures/*.*')),
+        ('share/' + package_name + '/models/rover',
+            glob('models/rover/*.*')),
+        ('share/' + package_name + '/models/rover/materials',
+            glob('models/rover/materials/*.*')),
+
         ('lib/' + package_name, [
             'terrain_mapping_drone_control/cylinder_landing_node.py',
-            'terrain_mapping_drone_control/aruco_tracker.py'
+            'terrain_mapping_drone_control/aruco_tracker.py',
+            'terrain_mapping_drone_control/odom_tf_publisher.py'
         ]),
+
         ('share/' + package_name + '/models/cylinder_short',
             glob('models/cylinder_short/*.*')),
         ('share/' + package_name + '/models/cylinder_short/materials',
@@ -55,6 +63,7 @@ setup(
             'feature_tracker = terrain_mapping_drone_control.feature_tracker:main',
             'pose_visualizer = terrain_mapping_drone_control.pose_visualizer:main',
             'spiral_trajectory = terrain_mapping_drone_control.spiral_trajectory:main',
+            'odom_tf_publisher = terrain_mapping_drone_control.odom_tf_publisher:main',
             'aruco_tracker = terrain_mapping_drone_control.aruco_tracker:main',
         ],
     },

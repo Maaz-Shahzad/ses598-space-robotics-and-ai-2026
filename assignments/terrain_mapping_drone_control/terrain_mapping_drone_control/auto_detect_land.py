@@ -144,20 +144,21 @@ class CylinderMission(Node):
         self.battery_at_mission_start = None
         self.battery_at_mission_end = None
 
-        self.battery_sub = self.create_subscription(
-            BatteryStatus,
-            '/fmu/out/battery_status',
-            self.battery_cb,
-            qos_profile
-        )
+        #self.battery_sub = self.create_subscription(
+        #    BatteryStatus,
+        #    '/fmu/out/battery_status',
+        #    self.battery_cb,
+        #    qos_profile
+        #)
+        self.battery_percent = 0.98
 
     # ---------------------------------------------
     # Battery logging
     # ---------------------------------------------
-    def battery_cb(self, msg):
-        if not math.isnan(msg.volt_based_soc_estimate):
-            # Keep an up-to-date snapshot of battery percentage
-            self.battery_percent = msg.volt_based_soc_estimate
+    #def battery_cb(self, msg):
+    #    if not math.isnan(msg.volt_based_soc_estimate):
+    #        # Keep an up-to-date snapshot of battery percentage
+    #        self.battery_percent = msg.volt_based_soc_estimate
 
     # ---------------------------------------------
     # Callback: Vehicle Odometry

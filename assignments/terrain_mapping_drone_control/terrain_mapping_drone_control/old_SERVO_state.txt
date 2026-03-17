@@ -1,0 +1,55 @@
+'''
+        elif self.state == "SERVO":
+            # Start the timer only once
+            if self.servo_start_time is None:
+                self.servo_start_time = time.time()
+
+            # Check if we have recent depth data
+            current_distance = None
+            if len(self.points_buffer) > 0:
+                _, _, Z = self.points_buffer[-1]
+                current_distance = Z
+
+            if current_distance is None:
+                # Timeout logic: give up after 5 seconds
+                if time.time() - self.servo_start_time > 5.0:
+                    self.get_logger().warn("Object not found within timeout. Returning to SEARCH_YAW.")
+                    
+                    # Clear stale detection data
+                    self.points_buffer.clear()
+                    
+                    # Reset timer and return to CIRCLE
+                    self.servo_start_time = None
+                    drone_x, drone_y, _ = self.position
+#                    self.theta = math.atan2(drone_y, drone_x)
+#                    self.state = "CIRCLE"
+#                    self.theta = math.atan2(drone_y, drone_x)
+                    self.state = "SEARCH_YAW"
+
+                else:
+                    # Keep hovering during search
+                    self.publish_trajectory_setpoint(self.position[0], self.position[1], self.altitude)
+            else:
+                # Move forward/backward to maintain distance
+                distance_error = self.desired_distance - current_distance
+                drone_x, drone_y, _ = self.position
+                gain = 0.5
+                dx = distance_error * gain
+
+                target_x = drone_x - dx
+                target_y = drone_y
+                target_z = self.altitude
+                self.get_logger().info("############################################################")
+                self.get_logger().info("current_distance: [%.2f]" % (current_distance))
+                self.get_logger().info("current position: [%.2f, %.2f]" % (drone_x, drone_y))
+                self.get_logger().info("distance_error: [%.2f]" % (distance_error))
+                self.get_logger().info("target [x,y,z]: [%.2f, %.2f, %.2f]" % (target_x, target_y, target_z))
+                self.publish_trajectory_setpoint(target_x, target_y, target_z)
+
+                # If within tolerance, hover to measure
+                if abs(distance_error) < self.distance_tolerance:
+                    self.get_logger().info("Reached above the rover. Going to HOVER.")
+                    self.hover_start_time = time.time()
+                    self.servo_start_time = None  # Reset for next time
+                    self.state = "HOVER"
+'''

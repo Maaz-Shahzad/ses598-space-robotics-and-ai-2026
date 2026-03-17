@@ -66,6 +66,24 @@ def generate_launch_description():
         output='screen'
     )
 
+    # Spawn the Rover
+    spawn_rover = Node(
+        package='ros_gz_sim',
+        executable='create',
+        arguments=[
+            '-file', os.path.join(gz_model_path, 'rover', 'model.sdf'),
+            '-name', 'mars_rover',
+            '-x', '5',    
+            '-y', '-10',  
+            '-z', '0',    
+            '-R', '0',    
+            '-P', '0',    
+            '-Y', '0',    
+            '-static'     
+        ],
+        output='screen'
+    )
+
     # Bridge node for camera and odometry
     bridge = Node(
         package='ros_gz_bridge',
@@ -109,7 +127,8 @@ def generate_launch_description():
             ('/mono_camera/camera_info', '/drone/down_mono/camera_info'),
             
             # Odometry remapping
-            ('/model/x500_depth_mono_0/odometry_with_covariance', '/fmu/out/vehicle_odometry'),
+#            ('/model/x500_depth_mono_0/odometry_with_covariance', '/fmu/out/vehicle_odometry'),
+            ('/model/x500_depth_mono_0/odometry_with_covariance', '/drone/odom')
         ],
         output='screen'
     )
@@ -131,6 +150,10 @@ def generate_launch_description():
         TimerAction(
             period=2.5,
             actions=[spawn_cylinder_back]
+        ),
+        TimerAction(
+            period=2.5,
+            actions=[spawn_rover]
         ),
         TimerAction(
             period=3.0,

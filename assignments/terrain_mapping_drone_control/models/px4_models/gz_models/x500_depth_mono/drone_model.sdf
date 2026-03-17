@@ -6,17 +6,17 @@
     </include>
     <include merge='true'>
       <uri>model://OakD-Lite-Modify</uri>
-      <pose>.12 .03 .242 0 0.523 0</pose>
+      <pose>.12 .03 .242 0 0 0</pose>
     </include>
     <joint name="CameraJoint" type="fixed">
       <parent>base_link</parent>
       <child>OakD-Lite-Modify/base_link</child>
-      <pose relative_to="base_link">.12 .03 .242 0 0.523 0</pose>
+      <pose relative_to="base_link">.12 .03 .242 0 0 0</pose>
     </joint>
 
     <!-- Mono Camera Link -->
     <link name="mono_camera_link">
-      <pose>0 0 0.15 0 1.5707 0</pose>
+      <pose>0 0 0.15 0 1.5707963267948966 0</pose>
       <inertial>
         <mass>0.050</mass>
         <inertia>

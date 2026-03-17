@@ -14,17 +14,22 @@ def generate_launch_description():
         ),
 
         # Static TF publisher for camera to base link transform
+        # Updated to new ROS 2 Jazzy argument style
         Node(
             package='tf2_ros',
             executable='static_transform_publisher',
             name='camera_to_base_link',
-            arguments=['0.1', '0', '0.05', '0', '0', '0', 'base_link', 'camera_link'],
+            arguments=[
+                '--x', '0.1', '--y', '0', '--z', '0.05', 
+                '--yaw', '0', '--pitch', '0', '--roll', '0', 
+                '--frame-id', 'base_link', '--child-frame-id', 'camera_link'
+            ],
             output='screen'
         ),  
 
         # RTAB-Map node
         Node(
-            package='rtabmap_ros',
+            package='rtabmap_slam', 
             executable='rtabmap',
             name='rtabmap',
             output='screen',
@@ -35,17 +40,27 @@ def generate_launch_description():
                 'frame_id': 'base_link',
                 'subscribe_depth': True,
                 'subscribe_rgb': True,
+                'subscribe_scan': False,
                 'approx_sync': True,
-                'queue_size': 10,
-                
+#                'approx_sync_max_interval': 0.1,  # Increase allowed delay to 100ms
+                'approx_sync_max_interval': 0.5,
+                'sync_queue_size': 10,
+                'wait_for_transform': 0.5,
+
+#                # Change Quality of service to Best effort
+#                'qos_image': 1,  # Force Best Effort
+#                'qos_depth': 1,
+#                'qos_odom': 2,
+
                 # Odometry parameters
                 'odom_frame_id': 'odom',
                 'subscribe_odom_info': False,
+                'subscribe_odom': True, # Check
                 'odom_tf_angular_variance': 0.01,
                 'odom_tf_linear_variance': 0.001,
                 
                 # Visual odometry parameters
-                'visual_odometry': False,  # Using PX4 odometry instead
+                'visual_odometry': False,  # Using PX4/Gazebo odometry instead
                 
                 # Mapping parameters
                 'grid_cell_size': 0.05,
@@ -64,13 +79,15 @@ def generate_launch_description():
                 'min_cluster_size': 100
             }],
             remappings=[
-                # Camera topics
-                ('rgb/image', '/camera/rgb/image_raw'),
-                ('depth/image', '/camera/depth/image_raw'),
-                ('rgb/camera_info', '/camera/rgb/camera_info'),
+                # Camera topics matched to rover_world.launch.py
+                ('rgb/image', '/drone/front_rgb'),
+                ('depth/image', '/drone/front_depth'),
+                ('depth/camera_info', '/drone/front_depth/camera_info'),
+                ('rgb/camera_info', '/drone/front_rgb/camera_info'),
                 
-                # Odometry from PX4
-                ('odom', '/fmu/out/vehicle_odometry'),
+                # Odometry from PX4/Gazebo bridge
+#                ('odom', '/fmu/out/vehicle_odometry'),
+                ('odom', '/drone/odom'),
                 
                 # Output topics
                 ('grid_map', 'map'),
@@ -82,7 +99,7 @@ def generate_launch_description():
 
         # RTAB-Map point cloud generation
         Node(
-            package='rtabmap_ros',
+            package='rtabmap_util',
             executable='point_cloud_xyz',
             name='point_cloud_xyz',
             parameters=[{
@@ -91,18 +108,44 @@ def generate_launch_description():
                 'voxel_size': 0.02,
                 'max_depth': 5.0,
                 'min_depth': 0.5
-#                'max_depth': 4.0,
-#                'min_depth': 0.4
             }],
             remappings=[
-                ('depth/image', '/camera/depth/image_raw'),
-                ('depth/camera_info', '/camera/depth/camera_info'),
+                ('depth/image', '/drone/front_depth'),
+                ('depth/camera_info', '/drone/front_depth/camera_info'),
+                # Odometry from PX4/Gazebo bridge
+#                ('odom', '/fmu/out/vehicle_odometry'),
+                ('odom', '/drone/odom'),
+
                 ('cloud', 'cloud_xyz')
+            ]
+        ),
+        
+        # RTAB-Map Viz Node
+        Node(
+            package='rtabmap_viz',
+            executable='rtabmap_viz',
+            name='rtabmap_viz',
+            output='screen',
+            parameters=[{
+                'use_sim_time': LaunchConfiguration('use_sim_time'),
+                'subscribe_depth': True,
+                'subscribe_rgb': True,
+                'frame_id': 'base_link',
+                'odom_frame_id': 'odom',
+                'map_frame_id': 'map'
+            }],
+            remappings=[
+                # Camera topics matched to rover_world.launch.py
+                ('rgb/image', '/drone/front_rgb'),
+                ('depth/image', '/drone/front_depth'),
+                ('rgb/camera_info', '/drone/front_rgb/camera_info'),
+#                ('odom', '/fmu/out/vehicle_odometry'),
+                ('odom', '/drone/odom')
             ]
         ),
 
         # Log info
         LogInfo(
-            msg="RTAB-Map launched with drone configuration"
+            msg="RTAB-Map launched with synchronized drone topics"
         )
-    ]) 
+    ])

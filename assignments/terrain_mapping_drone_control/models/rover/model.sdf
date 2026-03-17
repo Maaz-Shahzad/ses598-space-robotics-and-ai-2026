@@ -1,0 +1,72 @@
+<?xml version="1.0" ?>
+<sdf version="1.8">
+  <model name="mars_rover_static">
+    <static>true</static>
+    <link name="link">
+      <visual name="chassis_visual">
+        <pose>0 0 0.3 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>1.5 1.0 0.4</size>
+          </box>
+        </geometry>
+        <material>
+          <ambient>0.8 0.3 0.1 1</ambient> <diffuse>0.8 0.3 0.1 1</diffuse>
+          <specular>0.1 0.1 0.1 1</specular>
+        </material>
+      </visual>
+      <collision name="chassis_collision">
+        <pose>0 0 0.3 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>1.5 1.0 0.4</size>
+          </box>
+        </geometry>
+      </collision>
+      <visual name="aruco_marker">
+        <pose>0 0 0.505 0 0 0</pose>
+        <cast_shadows>false</cast_shadows>
+        <geometry>
+          <box>
+            <size>0.8 0.8 0.001</size>
+          </box>
+        </geometry>
+        <material>
+          <ambient>1.0 1.0 1.0 1.0</ambient>
+          <diffuse>1.0 1.0 1.0 1.0</diffuse>
+          <specular>0.0 0.0 0.0 1.0</specular>
+          <!-- <emissive>0.1 0.1 0.1 1.0</emissive> -->
+          <pbr>
+            <metal>
+              <!--<albedo_map>materials/aruco_marker_rover.png</albedo_map>-->
+              <albedo_map>materials/aruco_marker_0.png</albedo_map>
+              <roughness>0.0</roughness>
+              <metalness>0.0</metalness>
+            </metal>
+          </pbr>
+        </material>
+      </visual>
+
+      <visual name="fl_wheel">
+        <pose>0.5 0.6 0.2 1.5707 0 0</pose>
+        <geometry><cylinder><radius>0.2</radius><length>0.15</length></cylinder></geometry>
+        <material><ambient>0.1 0.1 0.1 1</ambient><diffuse>0.1 0.1 0.1 1</diffuse></material>
+      </visual>
+      <visual name="fr_wheel">
+        <pose>0.5 -0.6 0.2 1.5707 0 0</pose>
+        <geometry><cylinder><radius>0.2</radius><length>0.15</length></cylinder></geometry>
+        <material><ambient>0.1 0.1 0.1 1</ambient><diffuse>0.1 0.1 0.1 1</diffuse></material>
+      </visual>
+      <visual name="rl_wheel">
+        <pose>-0.5 0.6 0.2 1.5707 0 0</pose>
+        <geometry><cylinder><radius>0.2</radius><length>0.15</length></cylinder></geometry>
+        <material><ambient>0.1 0.1 0.1 1</ambient><diffuse>0.1 0.1 0.1 1</diffuse></material>
+      </visual>
+      <visual name="rr_wheel">
+        <pose>-0.5 -0.6 0.2 1.5707 0 0</pose>
+        <geometry><cylinder><radius>0.2</radius><length>0.15</length></cylinder></geometry>
+        <material><ambient>0.1 0.1 0.1 1</ambient><diffuse>0.1 0.1 0.1 1</diffuse></material>
+      </visual>
+    </link>
+  </model>
+</sdf>

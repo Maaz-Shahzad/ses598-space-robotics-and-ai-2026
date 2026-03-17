@@ -1,0 +1,166 @@
+Adjust circle_map center. Approximate rover_center somehow.
+Adjust location for hover to find ARUCO marker. Use rover_center and some z value such as -5.0.
+Resolve rtabmap installation and construct 3d model of the rover.
+
+(venv) maazshahzad@MSM:~/ros2_ws$ ros2 topic list
+/clock
+/drone/down_mono
+/drone/down_mono/camera_info
+/drone/front_depth
+/drone/front_depth/camera_info
+/drone/front_depth/points
+/drone/front_rgb
+/drone/front_rgb/camera_info
+/fmu/in/actuator_motors
+/fmu/in/actuator_servos
+/fmu/in/arming_check_reply
+/fmu/in/aux_global_position
+/fmu/in/config_control_setpoints
+/fmu/in/config_overrides_request
+/fmu/in/distance_sensor
+/fmu/in/goto_setpoint
+/fmu/in/manual_control_input
+/fmu/in/message_format_request
+/fmu/in/mode_completed
+/fmu/in/obstacle_distance
+/fmu/in/offboard_control_mode
+/fmu/in/onboard_computer_status
+/fmu/in/register_ext_component_request
+/fmu/in/sensor_optical_flow
+/fmu/in/telemetry_status
+/fmu/in/trajectory_setpoint
+/fmu/in/unregister_ext_component
+/fmu/in/vehicle_attitude_setpoint
+/fmu/in/vehicle_command
+/fmu/in/vehicle_command_mode_executor
+/fmu/in/vehicle_mocap_odometry
+/fmu/in/vehicle_rates_setpoint
+/fmu/in/vehicle_thrust_setpoint
+/fmu/in/vehicle_torque_setpoint
+/fmu/in/vehicle_visual_odometry
+/fmu/out/battery_status
+/fmu/out/estimator_status_flags
+/fmu/out/failsafe_flags
+/fmu/out/manual_control_setpoint
+/fmu/out/position_setpoint_triplet
+/fmu/out/sensor_combined
+/fmu/out/timesync_status
+/fmu/out/vehicle_attitude
+/fmu/out/vehicle_command_ack
+/fmu/out/vehicle_control_mode
+/fmu/out/vehicle_global_position
+/fmu/out/vehicle_gps_position
+/fmu/out/vehicle_land_detected
+/fmu/out/vehicle_local_position
+/fmu/out/vehicle_odometry
+/fmu/out/vehicle_status_v1
+/parameter_events
+/rosout
+
+
+ros2 launch rtabmap_launch rtabmap.launch.py \
+    rtabmap_args:="--delete_db_on_start" \
+    rgb_topic:=/zed/zed_node/rgb/image_rect_color \
+    depth_topic:=/zed/zed_node/depth/depth_registered \
+    camera_info_topic:=/zed/zed_node/rgb/camera_info \
+    frame_id:=zed_camera_link \
+    approx_sync:=false \
+    wait_imu_to_init:=true \
+    imu_topic:=/zed/zed_node/imu/data \
+    rviz:=true
+
+ros2 launch terrain_mapping_drone_control rtabmap.launch.py \
+    rtabmap_args:="--delete_db_on_start" \
+    rgb_topic:=/drone/front_rgb \
+    depth_topic:=/drone/front_depth \
+    camera_info_topic:=/drone/front_rgb/camera_info \
+    frame_id:=base_link \
+    approx_sync:=true \
+    wait_imu_to_init:=true \
+    imu_topic:=/fmu/out/vehicle_odometry \
+    rviz:=true
+
+ros2 launch rtabmap_launch rtabmap.launch.py \
+    rtabmap_args:="--delete_db_on_start" \
+    rgb_topic:=/drone/front_rgb \
+    depth_topic:=/drone/front_depth \
+    camera_info_topic:=/drone/front_rgb/camera_info \
+    frame_id:=base_link \
+    approx_sync:=true \
+    wait_imu_to_init:=true \
+    imu_topic:=/fmu/out/vehicle_odometry \
+    rviz:=true
+
+Option 1 — rosbag record + offline rtabmap processing
+Step 1
+ — Delete the old database
+bash: rm ~/.ros/rtabmap.db
+
+Step 2
+ — Launch the world and mission as normal
+
+Terminal 1:
+bash: source ~/ros2_ws/rosenv.sh
+ros2 launch terrain_mapping_drone_control rover_world.launch.py
+
+Terminal 2:
+bash: source ~/ros2_ws/rosenv.sh
+ros2 launch terrain_mapping_drone_control rover_mission.launch.py
+
+Terminal 3 — start the odom converter:
+bash: source ~/ros2_ws/rosenv.sh
+python3 ~/ros2_ws/src/terrain_mapping_drone_control/terrain_mapping_drone_control/px4_odom_converter.py
+
+Step 3 — Wait for the drone to take off, then start recording
+
+Terminal 4 — once the drone is airborne:
+bash: source ~/ros2_ws/rosenv.sh
+ros2 bag record \
+  /drone/front_rgb \
+  /drone/front_depth \
+  /drone/front_rgb/camera_info \
+  /drone/front_depth/camera_info \
+  /drone/odom \
+  /tf \
+  /tf_static \
+  -o ~/ros2_ws/mission_bag
+
+
+Step 4 — Let the drone complete its full mission
+Wait until the drone finishes the spiral and lands. Then stop the recording with Ctrl+C in Terminal 4. Check the bag was recorded:
+bash: ros2 bag info ~/ros2_ws/mission_bag
+You should see all 7 topics with message counts.
+
+Step 5 — Stop everything except the odom converter
+Stop Terminal 1 (world), Terminal 2 (mission). Keep Terminal 3 (converter) running or stop it — it's not needed for replay.
+
+Step 6 — Delete old database and launch rtabmap for offline processing
+bash: rm ~/.ros/rtabmap.db
+
+Terminal 1 — launch rtabmap:
+bash: source ~/ros2_ws/rosenv.sh
+ros2 launch terrain_mapping_drone_control rtabmap_jazzy_droneOdo.launch.py
+
+Terminal 2 — replay the bag at full speed:
+bash: source ~/ros2_ws/rosenv.sh
+ros2 bag play ~/ros2_ws/mission_bag --clock --rate 1.0
+Watch the rtabmap terminal — the delay should stay near 0 since it's processing at the same rate as the bag plays. Wait for the bag to finish playing completely.
+
+Step 7 — Stop rtabmap cleanly and export
+bash: # Ctrl+C in rtabmap terminal, then:
+
+cd ~/.ros
+rtabmap-export \
+  --cloud \
+  --voxel 0.02 \
+  --min_cluster_size 50 \
+  --poses_camera \
+  --output mission_map \
+  rtabmap.db
+ls ~/.ros/mission_map_cloud.ply
+
+Step 8 — View the result
+bash: sudo apt install cloudcompare -y
+cloudcompare ~/.ros/mission_map_cloud.ply
+
+The key advantage over what you had before is that the bag replay is controlled — no real-time pressure, no delay buildup, and you can replay it as many times as you want with different rtabmap settings without re-running the simulation.
